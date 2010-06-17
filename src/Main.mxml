@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/halo" 
+			   minWidth="600" 
+			   xmlns:local="*"
+			   creationComplete="creationCompleteHandler(event)" 
+			   xmlns:layouts="com.leonardsouza.spark.layouts.*">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			
+			import spark.components.Label;
+
+			[Bindable]
+			public var labelCollection1:ArrayCollection;
+			
+			[Bindable]
+			public var labelCollection2:ArrayCollection;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				labelCollection1 = new ArrayCollection();
+				for (var x:int = 0; x <= 40; x++)
+				{
+					var fontSize:int = x <= 26 ? 8 : 16;
+					var label:Label = new Label();
+					label.text = GenerateRandomAN(randRange(3, 8));
+					label.setStyle("fontSize", fontSize);
+					labelCollection1.addItem(label);
+				}
+				
+				labelCollection2 = new ArrayCollection();
+				for (x = 0; x <= 40; x++)
+				{
+					fontSize = x <= 26 ? 8 : 16;
+					label = new Label();
+					label.text = GenerateRandomAN(randRange(3, 8));
+					label.setStyle("fontSize", fontSize);
+					labelCollection2.addItem(label);
+				}
+			}
+
+			public function GenerateRandomAN(maxSize:int):String
+			{
+				var randomAlphaNumeric:String = "";
+				// Purposefully omitting 1, I, 0 and O since they look similar
+				var charPool:String = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+				var randomNumberUnder100:int;
+				
+				for (var i:int = 0; i < maxSize; i++)
+				{
+					randomNumberUnder100 = Math.floor((Math.random() * 100));
+					var position:int = randomNumberUnder100 % (charPool.length - 1);
+					randomAlphaNumeric += charPool.charAt(position);
+				}
+				
+				return randomAlphaNumeric;
+			}
+			
+			private function randRange(minNum:Number, maxNum:Number):Number 
+			{
+				return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup
+		horizontalCenter="0"
+		verticalCenter="0"
+		gap="40">
+
+		<s:Label
+			text="Original TileLayout" 
+			fontWeight="bold"/>
+		
+		<s:DataGroup
+			id="tileGroup"
+			dataProvider="{labelCollection1}">
+			
+			<s:layout><s:TileLayout orientation="columns" requestedColumnCount="5" horizontalGap="10" verticalGap="5" /></s:layout>
+			
+		</s:DataGroup>
+		
+		<s:Label
+			text="Variable TileLayout"
+			fontWeight="bold"/>
+		
+		<s:DataGroup
+			id="variableGroup"
+			dataProvider="{labelCollection2}">
+			
+			<s:layout><layouts:VariableTileLayout orientation="columns" requestedColumnCount="5" horizontalGap="10" verticalGap="5" /></s:layout>
+			
+		</s:DataGroup>
+		
+	</s:VGroup>
+	
+</s:Application>
