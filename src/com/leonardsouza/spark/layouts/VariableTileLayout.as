@@ -1888,14 +1888,14 @@ package com.leonardsouza.spark.layouts
 				if (++counter >= counterLimit)
 				{
 					counter = 0;
-					if (orientation == TileOrientation.ROWS)
+					if (orientation == TileOrientation.ROWS && ((variableCounter + 1) < _orientationRowArray.length))
 					{
 						xPos = 0;
 						yPos += _orientationRowArray[variableCounter].yMinorDelta;
 						elementWidth = _orientationRowArray[variableCounter+1].xMajorDelta - _horizontalGap;
 						elementHeight = _orientationRowArray[variableCounter+1].yMinorDelta - _verticalGap;
 					}
-					else
+					else if (orientation == TileOrientation.COLUMNS && ((variableCounter + 1) < _orientationColumnArray.length))
 					{
 						xPos += _orientationColumnArray[variableCounter].xMinorDelta;
 						yPos = 0;
